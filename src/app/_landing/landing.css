@@ -1,0 +1,164 @@
+/* Public landing page: one continuous daylight sky behind the hero and every island. */
+.landing {
+  --sky-top: #d0e4f3;
+  --sky-bottom: #fcf6ec;
+  position: relative;
+  isolation: isolate;
+}
+.landing::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, var(--sky-top) 0%, #e9f0f2 45%, var(--sky-bottom) 100%);
+}
+
+.landing-header {
+  background: rgb(255 255 255 / 0.82);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 1px 0 rgb(27 24 56 / 0.06);
+}
+
+/* Soft clouds: layered blurred ellipses. Each layer drifts at its own speed on scroll. */
+.cloud-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  filter: blur(10px);
+}
+.cloud-back {
+  opacity: 0.7;
+  background:
+    radial-gradient(38% 9% at 18% 22%, #fff 0 45%, transparent 70%),
+    radial-gradient(26% 7% at 30% 19%, #fff 0 40%, transparent 70%),
+    radial-gradient(30% 8% at 82% 30%, #fff 0 45%, transparent 70%),
+    radial-gradient(22% 6% at 70% 27%, #fff 0 40%, transparent 70%);
+}
+.cloud-front {
+  z-index: 1;
+  opacity: 0.85;
+  background:
+    radial-gradient(34% 10% at 12% 88%, #fff 0 45%, transparent 72%),
+    radial-gradient(24% 8% at 26% 92%, #fff 0 40%, transparent 72%),
+    radial-gradient(30% 9% at 58% 96%, #fff 0 45%, transparent 72%);
+}
+.cloud-hero {
+  opacity: 0.75;
+  background:
+    radial-gradient(30% 8% at 78% 78%, #fff 0 45%, transparent 70%),
+    radial-gradient(22% 6% at 90% 72%, #fff 0 40%, transparent 70%),
+    radial-gradient(28% 7% at 8% 14%, #fff 0 45%, transparent 70%);
+}
+
+/* The crest artwork has a white ground, so it sits on a round plate with a gold ring. */
+.crest-float {
+  box-shadow:
+    0 0 0 6px rgb(183 131 42 / 0.55),
+    0 30px 60px -24px rgb(27 24 56 / 0.35);
+  animation: crest-float 7s ease-in-out infinite;
+}
+@keyframes crest-float {
+  50% { translate: 0 -10px; }
+}
+
+.landing-card {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: rgb(255 255 255 / 0.84);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  box-shadow:
+    0 1px 2px rgb(27 24 56 / 0.06),
+    0 24px 48px -20px rgb(27 24 56 / 0.28);
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .landing-card { padding: 1.75rem 2rem; }
+}
+
+/* Clan stage: the canvas fades in once the islands load; one card shows at a time. */
+.clan-canvas {
+  opacity: 0;
+  transition: opacity 600ms ease-out;
+}
+.clan-canvas[data-ready="true"] {
+  opacity: 1;
+}
+/* Outgoing card leaves first, then the next arrives, so two cards never overlap. */
+.clan-card {
+  opacity: 0;
+  translate: 0 12px;
+  pointer-events: none;
+  transition: opacity 220ms ease-in, translate 220ms ease-in;
+}
+.clan-card[data-active="true"] {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+  transition: opacity 380ms ease-out 220ms, translate 380ms ease-out 220ms;
+}
+.clan-rail {
+  background: rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px -10px rgb(27 24 56 / 0.3);
+}
+.clan-rail button {
+  color: var(--color-muted);
+  transition: background-color 150ms ease-out, color 150ms ease-out;
+}
+.clan-rail button:hover,
+.clan-rail button[aria-current="true"] {
+  background: rgb(255 255 255 / 0.95);
+  color: var(--color-ink);
+  box-shadow: 0 0 0 2px var(--color-royal-soft);
+}
+
+/* Finale: the islands line up by score; their captions fade in under them. */
+.clan-rail[data-finale="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+.clan-rail {
+  transition: opacity 300ms ease-out;
+}
+.finale-head,
+.finale-cards {
+  grid-auto-rows: 1fr;          /* equal-height point cards, whatever their text */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease-in;
+}
+.finale-head[data-on="true"],
+.finale-cards[data-on="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 500ms ease-out 250ms;
+}
+.finale-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 4px solid var(--house);
+  box-shadow: 0 1px 2px rgb(27 24 56 / 0.06), 0 16px 32px -16px rgb(27 24 56 / 0.3);
+}
+@media (min-width: 1024px) {
+  /* each caption sits under its own island (the stage sets --x every frame) */
+  .finale-card {
+    position: absolute;
+    bottom: 0;
+    left: var(--x, 50%);
+    width: 17rem;
+    height: 5.5rem;
+    margin-left: -8.5rem;
+    padding: 0.75rem 1rem;
+    transition: left 120ms linear;
+  }
+}

@@ -1,0 +1,30 @@
+import {
+  BookOpen,
+  Briefcase,
+  Building2,
+  Clapperboard,
+  Cog,
+  Landmark,
+  Laptop,
+  Megaphone,
+  Palette,
+  Rocket,
+  Scale,
+  Stethoscope,
+  type LucideIcon,
+} from "lucide-react";
+
+export const STREAM_ICONS: Record<string, LucideIcon> = {
+  law: Scale,
+  management: Briefcase,
+  sales: Megaphone,
+  architecture: Building2,
+  entrepreneurship: Rocket,
+  engineering: Cog,
+  finance: Landmark,
+  cs: Laptop,
+  medicine: Stethoscope,
+  media: Clapperboard,
+  education: BookOpen,
+  humanities: Palette,
+};

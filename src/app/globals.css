@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+/* House Crest theme (custom theme-factory theme, drawn from the Sairam Grand House Alliance crest). */
+@theme {
+  --color-chalk: #f5f6f8;
+  --sky-top: #d0e4f3;
+  --sky-bottom: #fcf6ec;
+  --color-surface: #ffffff;
+  --color-sunken: #eceef3;
+  --color-line: #dcdfe7;
+  --color-ink: #1b1838;
+  --color-muted: #545270;
+  --color-royal: #4a2d8c;
+  --color-royal-dark: #38206e;
+  --color-royal-soft: #ece7f7;
+  --color-gold: #b7832a;
+  --color-gold-soft: #f6ecd8;
+  --color-veera: #a8261b;
+  --color-varunaa: #1d4f9e;
+  --color-vaaranam: #1e6a3b;
+  --color-vimaana: #e3ac12;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+  --color-success: #1e6a3b;
+  --color-success-soft: #e5f2e9;
+
+  /* Match-score parts, also used as the breakdown legend */
+  --color-part-interest: #4a2d8c;
+  --color-part-riasec: #1d4f9e;
+  --color-part-style: #1e6a3b;
+  --color-part-personality: #b7832a;
+
+  --font-sans: var(--font-atkinson), "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cinzel), Cinzel, Georgia, serif;
+
+  --radius-card: 14px;
+  --shadow-raised: 0 1px 2px rgb(27 24 56 / 0.06), 0 6px 18px -6px rgb(27 24 56 / 0.14);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+  html {
+    background: var(--sky-bottom);
+  }
+  /* One daylight sky behind every screen, the same one the landing page flies through. */
+  body {
+    position: relative;
+    isolation: isolate;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, var(--sky-top) 0%, #e9f0f2 42%, var(--sky-bottom) 100%);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    line-height: 1.2;
+  }
+  ::selection {
+    background: var(--color-royal-soft);
+    color: var(--color-royal-dark);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-royal);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  input,
+  select,
+  textarea {
+    caret-color: var(--color-royal);
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .font-crest {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition:
+      background-color 150ms ease-out,
+      color 150ms ease-out,
+      box-shadow 150ms ease-out;
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+  .btn-primary {
+    background: var(--color-royal);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-royal-dark);
+  }
+  .btn-quiet {
+    background: transparent;
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+  .btn-quiet:hover:not(:disabled) {
+    background: var(--color-sunken);
+  }
+
+  .field {
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    background: var(--color-surface);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+  }
+  .field:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--color-royal);
+  }
+  .field[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 2px var(--color-danger);
+  }
+
+  /* Cards hold what people type, so a long unbroken string wraps instead of spilling out. */
+  .panel {
+    overflow-wrap: anywhere;
+    background: rgb(255 255 255 / 0.9);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-raised);
+  }
+  /* The house card used across the app: frosted white. */
+  .house-panel {
+    overflow-wrap: anywhere;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: rgb(255 255 255 / 0.86);
+    backdrop-filter: blur(16px) saturate(1.15);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    box-shadow: 0 1px 2px rgb(27 24 56 / 0.06), 0 24px 48px -20px rgb(27 24 56 / 0.28);
+  }
+  .rank-badge {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    background: var(--house);
+    color: var(--on-house);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+  /* Frosted app header, shared by every signed-in screen. */
+  .app-header {
+    background: var(--color-surface);
+    box-shadow: 0 1px 0 rgb(27 24 56 / 0.06);
+  }
+  .nav-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    transition: background-color 150ms ease-out, color 150ms ease-out;
+  }
+  .nav-pill:hover {
+    background: rgb(255 255 255 / 0.9);
+    color: var(--color-ink);
+  }
+  .nav-pill[aria-current="page"] {
+    background: var(--color-royal-soft);
+    color: var(--color-royal-dark);
+  }
+
+  /* The house pennant: a banner with a swallowtail cut, filled with the house colour. */
+  .pennant {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 28px), 0 100%);
+  }
+
+  /* 5-point "how much like me" scale */
+  .scale-option {
+    display: grid;
+    place-items: center;
+    min-height: 2.75rem;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    background: var(--color-surface);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+  }
+  .scale-option:hover {
+    background: var(--color-sunken);
+  }
+  input:checked + .scale-option {
+    background: var(--color-royal);
+    color: #fff;
+    box-shadow: none;
+  }
+  input:focus-visible + .scale-option {
+    outline: 3px solid var(--color-royal);
+    outline-offset: 2px;
+  }
+
+  input[type="range"] {
+    accent-color: var(--color-royal);
+    width: 100%;
+    min-height: 2.75rem;
+  }
+  input[type="range"][data-untouched="true"] {
+    accent-color: var(--color-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
